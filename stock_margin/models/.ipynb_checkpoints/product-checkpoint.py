@@ -8,15 +8,23 @@ class ProductTemplate(models.Model):
      
     margin = fields.Float(string="Margin", compute="_compute_margin", store=True)
     margin_rate = fields.Float(string="Margin rate (%)", compute="_compute_margin", store=True)
+    margin_reco = fields.Float('Recommendation', related='categ_id.margin_reco', readonly=True)
 
+    def _prepare_margin(self):
+        if self.product_variant_count == 1 and not self.is_product_variant:
+            margin = self.list_price - self.standard_price
+            margin_rate = (margin / self.standard_price)
+        else:
+            margin = margin_rate = 0.0        
+            
+        return {'margin': margin, 'margin_rate': margin_rate}
+    
     @api.depends('list_price', 'lst_price', 'standard_price')
     def _compute_margin(self):
         for record in self:
-            if record.product_variant_count == 1 and not record.is_product_variant:
-                record.margin = record.list_price - record.standard_price
-                record.margin_rate = (record.margin / record.standard_price)
-            else:
-                record.margin = record.margin_rate = 0.0
+            values = record._prepare_margin()
+            record.margin = values.get('margin', 0.0)
+            record.margin_rate = values.get('margin_rate', 0.0)
 
     def action_recalc_margin(self):
         for record in self:
@@ -52,6 +60,18 @@ class ProductTemplate(models.Model):
                 'res_id': product_id.id,
                 'res_model_id': self.env.ref('product.model_product_template').id,
             })        
+
+    def action_calc_product_margin2(self):
+        msg = 'test test test'
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'title',
+            'res_model': 'product.margin',
+            'view_mode': 'form',
+            'views_id': {'ref': "stock_margin.view_product_margin"},
+            'context': self.env.context,
+            'target': 'new',
+        }            
         
 class ProductProduct(models.Model):
     _inherit = 'product.product'

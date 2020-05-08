@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_margin" model="ir.ui.view">
+        <field name="name">Margin</field>
+        <field name="model">product.margin</field>
+        <field name="arch" type="xml">
+            <form string="Margin calc wizard">
+                <p>
+                Use this assistant to calculate your salesprice based on margin.
+                </p>
+                <group>
+                    <group>
+                        <field name="product_tmpl_id" invisible="1"/>
+                        <field name="product_has_variants" invisible="1"/>
+                        <field name="product_id" invisible="1"/>
+
+                        <field name="standard_price" widget="monetary"/>
+                        <field name="list_price" widget="monetary"/>
+                        <field name="lst_price" widget="monetary"/>
+                        <field name="margin_reco" widget="percentage"/>
+                    </group>
+                    <group>
+                        <field name="formula" widget="radio"/>
+                        <field name="round_method"/>
+                    </group>                
+                </group>
+                <group>
+                    <field name="price" widget="monetary"/>
+                    <field name="margin" widget="monetary"/>
+                    <field name="margin_rate" widget="percentage"/>
+                </group>                
+                <footer>
+                    <button name="update_price"
+                        string="Confirm"
+                        type="object"
+                        class="btn-primary"/>
+                    <button string="Discard"
+                        class="btn-secondary"
+                        special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_calc_product_margin"
+        name="Set Margin"
+        res_model="product.margin"
+        view_mode="form"
+        target="new"/>
+    
+    <record id="action_product_margin" model="ir.actions.act_window">
+        <field name="name">Margin calc</field>
+        <field name="res_model">product.margin</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+    <!-- view used for product.product only -->
+    <record model="ir.ui.view" id="product_form_view_margin_button">
+        <field name="name">product_normal_form_view</field>
+        <field name="model">product.product</field>
+        <field name="groups_id" eval="[(4, ref('stock.group_stock_user'))]"/>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <data>
+                <header position="inside">
+                    <button string="Margin" type="action"
+                        name="%(action_product_margin)d"
+                        context="{'default_product_id': id}"
+                        groups="stock.group_stock_user"/>
+                </header>
+            </data>
+        </field>
+    </record>
+
+    <record id="product_product_view_form_easy_margin_button" model="ir.ui.view">
+        <field name="name">product_variant_easy_edit_view</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button string="Margin" type="action"
+                    name="%(action_product_margin)d"
+                    context="{'default_product_id': id}"
+                    groups="stock.group_stock_user"/>
+            </header>
+        </field>
+    </record>    
+
+    <!-- view used for product.template only -->
+    <record model="ir.ui.view" id="product_template_form_view_margin_button">
+        <field name="name">product_template_only_form_view</field>
+        <field name="model">product.template</field>
+        <field name="groups_id" eval="[(4, ref('stock.group_stock_user'))]"/>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <data>
+                <header position="inside" >
+                    <button string="Margin" type="action"
+                        name="%(action_product_margin)d"
+                        context="{'default_product_tmpl_id': id}"
+                        groups="stock.group_stock_user"/>
+                </header>
+            </data>
+        </field>    
+    </record>
+    
+</odoo>

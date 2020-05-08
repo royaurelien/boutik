@@ -9,6 +9,7 @@
             <xpath expr="//div[@name='standard_price_uom']" position="after">
                 <field name="margin" widget="monetary" attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}"/>
                 <field name="margin_rate" widget="percentage" attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}"/>
+                <field name="margin_reco" widget="percentage" attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}"/>
             </xpath>
 
         </field>
@@ -23,6 +24,7 @@
             <xpath expr="//field[@name='standard_price']" position="after">
                 <field name="margin" widget="monetary"/>
                 <field name="margin_rate" widget="percentage"/>
+                <field name="margin_reco" widget="percentage"/>
             </xpath>
 
         </field>

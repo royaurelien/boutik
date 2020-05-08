@@ -17,7 +17,7 @@
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.1',
+    'version': '0.2',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -31,6 +31,8 @@
         'views/views.xml',
         'views/templates.xml',
         'views/product.xml', 
+        'views/product_category.xml', 
+        'wizard/product_margin.xml', 
     ],
     # only loaded in demonstration mode
     'demo': [

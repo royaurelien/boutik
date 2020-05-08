@@ -1,0 +1,31 @@
+<odoo>
+    <!-- Model = product_template -->
+    <record id="product_category_form_view" model="ir.ui.view">
+        <field name="name">stock_margin_category_form_view</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//sheet" position="inside">
+                <header>
+                <button
+                    class="btn btn-primary"
+                    name="action_popup"
+                    string="Popup"
+                    type="object"/>
+                </header>
+            </xpath>
+            
+            
+            <xpath expr="//group[@name='first']" position="after">
+                <group name="margin" string="Margin">
+                    <field name="margin_reco" widget="percentage"/>
+                </group>
+            </xpath>
+            
+        </field>
+    </record>
+    
+ 
+
+</odoo>
