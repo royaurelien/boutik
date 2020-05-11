@@ -13,7 +13,7 @@ class ProductTemplate(models.Model):
     def _prepare_margin(self):
         if self.product_variant_count == 1 and not self.is_product_variant:
             margin = self.list_price - self.standard_price
-            margin_rate = (margin / self.standard_price)
+            margin_rate = (margin / self.standard_price) if self.standard_price > 0.0 else 0.0
         else:
             margin = margin_rate = 0.0        
             
